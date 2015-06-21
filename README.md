@@ -9,6 +9,12 @@ The main difference with classic authentication, is that no cleartext password i
 
 On the server, there's a configurable allowed clock skew and hashes are computed around the NOW(), if nothing match the hash, the password was either wrong or the clock of the client (or the server!?) was skewed.
 
+## Files description
+
+* timedauth.py: Flask REST api implementing the "Timed Authentication"
+* cli.py: Python CLI to query that REST API
+* auth.html: HTML/Javascript login to this REST API
+
 ## Who
 
 * [@tgouverneur](https://twitter.com/tgouverneur) on twitter
