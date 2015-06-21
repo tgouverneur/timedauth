@@ -1,4 +1,7 @@
 #!/usr/bin/python
+"""
+* Thomas Gouverneur - 2015
+"""
 import requests
 import json
 import sys

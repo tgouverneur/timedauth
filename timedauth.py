@@ -1,3 +1,7 @@
+#!/usr/bin/python
+"""
+* Thomas Gouverneur - 2015
+"""
 import json
 import hashlib
 from passlib.hash import pbkdf2_sha256
