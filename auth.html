@@ -12,12 +12,14 @@
      <input type="button" value="Login" onClick="login();" />
     </form>
     <script type="text/javascript">
-      function saltPassword(password) {
+      function saltPassword(password, username) {
         var now = Math.floor(new Date() / 1000);
-	var bits = sjcl.hash.sha256.hash(password)
-        var first = sjcl.codec.hex.fromBits(bits)
-        return sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(first + now))
+	var first = '$pbkdf2-sha256$20000$' + 
+		    sjcl.codec.base64.fromBits(sjcl.codec.utf8String.toBits(username), true).replace(/\+/g, '.') + '$' +
+		    sjcl.codec.base64.fromBits(sjcl.misc.pbkdf2(password, sjcl.codec.utf8String.toBits(username), 20000), true).replace(/\+/g, '.');
+        return sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(first + now));
       }
+
       function login() {
         $('#status').html('Generating hash...');
         var username = $('#usernameForm').val();
@@ -26,7 +28,7 @@
             $('#status').html('Username and Password are required');
             return;
         }
-        var data = '{"username":"' + username + '","password":"' + saltPassword(password) + '"}';
+        var data = '{"username":"' + username + '","password":"' + saltPassword(password, username) + '"}';
         $('#status').html('Submitting data...');
         $.ajax({
             type: "POST",

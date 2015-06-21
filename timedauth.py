@@ -1,5 +1,6 @@
 import json
 import hashlib
+from passlib.hash import pbkdf2_sha256
 import time
 from functools import wraps
 from flask import Flask, abort, request, Response
@@ -7,7 +8,7 @@ from flask import Flask, abort, request, Response
 app = Flask(__name__)
 
 site_username = 'tgouverneur'
-site_password = hashlib.sha256('test123').hexdigest()
+site_password = pbkdf2_sha256.encrypt('test123', salt=site_username, rounds=20000)
 skew_seconds = 15
 
 @app.after_request
@@ -54,6 +55,7 @@ def login():
     if params['username'] != site_username:
 	return {'rc':-1, 'msg':'Wrong username'}
         
+    app.logger.debug('REQ: ' + params['password'])
     rc = checkPassword(params['password'])
 
     if rc is False:
