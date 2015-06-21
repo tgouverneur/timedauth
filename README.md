@@ -36,6 +36,8 @@ When a request is made, the following logic is followed:
 
 ## Who
 
+I'd be happy to receive any feedback or comment you may have... You can reach me on:
+
 * [@tgouverneur](https://twitter.com/tgouverneur)
 * thomas <at> espix <dot> net
 
