@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title>Timed Authentication POC</title>
+    <script src="http://bitwiseshiftleft.github.io/sjcl/sjcl.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+  </head>
+  <body>
+    <div id="status"></div><br/>
+    <form>
+     Username: <input type="text" id="usernameForm"/><br/>
+     Password: <input type="password" id="passwordForm"/><br/>
+     <input type="button" value="Login" onClick="login();" />
+    </form>
+    <script type="text/javascript">
+      function saltPassword(password) {
+        var now = Math.floor(new Date() / 1000);
+	var bits = sjcl.hash.sha256.hash(password)
+        var first = sjcl.codec.hex.fromBits(bits)
+        return sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(first + now))
+      }
+      function login() {
+        $('#status').html('Generating hash...');
+        var username = $('#usernameForm').val();
+        var password = $('#passwordForm').val();
+        if( username == "" || password == "") {
+            $('#status').html('Username and Password are required');
+            return;
+        }
+        var data = '{"username":"' + username + '","password":"' + saltPassword(password) + '"}';
+        $('#status').html('Submitting data...');
+        $.ajax({
+            type: "POST",
+            url: "http://10.42.1.1:5080/login",
+            data: data,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(data) {
+                resp = JSON.parse(data.responseText);
+                $('#status').html("Success: " + resp['msg']);
+            },
+            error: function(data) {
+                resp = JSON.parse(data.responseText);
+                $('#status').html("Error: " + resp['msg']);
+            }
+        });
+      }
+    </script>
+  </body>
+</html>
