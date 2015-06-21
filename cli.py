@@ -1,6 +1,7 @@
 #!/usr/bin/python
 """
 * Thomas Gouverneur - 2015
+* @license https://github.com/tgouverneur/timedauth/blob/master/LICENSE.md Revised BSD License
 """
 import requests
 import json
