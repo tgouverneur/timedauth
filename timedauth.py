@@ -4,9 +4,18 @@ import time
 from functools import wraps
 from flask import Flask, abort, request, Response
 
+app = Flask(__name__)
+
 site_username = 'tgouverneur'
 site_password = hashlib.sha256('test123').hexdigest()
 skew_seconds = 15
+
+@app.after_request
+def after_request(resp):
+    resp.headers.add('Access-Control-Allow-Origin', '*')
+    resp.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    resp.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+    return resp
 
 def checkPassword(password):
     now = int(time.time())
@@ -34,7 +43,6 @@ def wrapresponse(f):
         return Response(json.dumps(resp),200,[("Content-Type","application/json")])
     return wrapperfunc
 
-app = Flask(__name__)
 
 @app.route("/login", methods=['POST'])
 @wrapresponse

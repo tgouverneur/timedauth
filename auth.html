@@ -35,8 +35,11 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data) {
-                resp = JSON.parse(data.responseText);
-                $('#status').html("Success: " + resp['msg']);
+		if (data['rc'] != 0) {
+		    $('#status').html(data['msg']);
+                } else {
+		    $('#status').html(data['msg'] + '(clock skew: ' + data['skew'] + ')');
+                }
             },
             error: function(data) {
                 resp = JSON.parse(data.responseText);
