@@ -43,6 +43,6 @@ I'd be happy to receive any feedback or comment you may have... You can reach me
 
 ## Thanks
 
-* [@ar1s](https://twitter.com/ar1s)
+* [@aris_ada](https://twitter.com/aris_ada)
 * [@tartinedeouf](https://twitter.com/tartinedeouf), my love ;-)
 * Matthew, Ellie
